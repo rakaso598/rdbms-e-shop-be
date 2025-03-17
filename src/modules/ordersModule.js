@@ -15,11 +15,22 @@ ordersRouter.post("/", async (req, res, next) => {
 
     const order = await prisma.order.create({
       data: {
-        status: "pending",
         userId,
       },
     });
 
+    data.forEach((orderItem) => {
+      const { productId, quantity } = orderItem;
+      prisma.product.findUnique({ where: { id: productId } });
+      const amount = prisma.orderItem.create({
+        data: {
+          orderId: order.id,
+          productId,
+          quantity,
+          amount,
+        },
+      });
+    });
     res.send("OK");
   } catch (e) {
     next(e);
