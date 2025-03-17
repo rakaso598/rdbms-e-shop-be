@@ -1,5 +1,5 @@
-import express from "express";
-import prisma from "../db/prisma/clientPrisma.js";
+const express = require("express");
+const prisma = require("../db/prisma/client.prisma");
 
 const usersRouter = express.Router();
 
@@ -47,4 +47,4 @@ usersRouter.post("/log-in", async (req, res, next) => {
   }
 });
 
-export default usersRouter;
+module.exports = usersRouter;

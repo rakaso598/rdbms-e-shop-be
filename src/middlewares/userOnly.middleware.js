@@ -4,4 +4,4 @@ function userOnly(req, res, next) {
   next();
 }
 
-export default userOnly;
+module.exports = userOnly;

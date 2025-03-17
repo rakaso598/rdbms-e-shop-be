@@ -8,4 +8,4 @@ function authentication(req, res, next) {
   next();
 }
 
-export default authentication;
+module.exports = authentication;

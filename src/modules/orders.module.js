@@ -1,6 +1,6 @@
-import express from "express";
-import prisma from "../db/prisma/clientPrisma.js";
-import userOnly from "../middlewares/userOnlyMiddleware.js";
+const express = require("express");
+const prisma = require("../db/prisma/client.prisma");
+const userOnly = require("../middlewares/userOnly.middleware");
 
 const ordersRouter = express.Router();
 
@@ -113,4 +113,4 @@ ordersRouter.delete("/:orderId/cancel", userOnly, async (req, res, next) => {
   }
 });
 
-export default ordersRouter;
+module.exports = ordersRouter;

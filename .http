@@ -1,59 +1,54 @@
+### Health Check
 GET http://localhost:5555/health-check
 
-### POST 회원가입
-
+### 회원가입
 POST http://localhost:5555/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "test3@test.com",
-  "name": "test",
-  "password": "1234"
+    "email": "test4@test.com",
+    "name": "유진영",
+    "password": "qwer1234"
 }
 
 ### 로그인
-
 POST http://localhost:5555/users/log-in
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "1234"
+    "email": "test@test.com",
+    "password": "qwer1234"
 }
 
 ### 주문하기
-
 POST http://localhost:5555/orders
 Content-Type: application/json
-Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 [
-  {"productId": 1, "quantity": 2},
-  {"productId": 2, "quantity": 1},
-  {"productId": 5, "quantity": 3}
+    {"productId": 1, "quantity": 2},
+    {"productId": 2, "quantity": 1},
+    {"productId": 5, "quantity": 3}
 ]
 
 ### 결제하기
-
 POST http://localhost:5555/orders/payment
 Content-Type: application/json
-Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 {
-  "orderId": "07f15d89-d192-498c-ae49-fc5742ede28d",
-  "paidAmount": 1203700
+    "orderId": "34c9a9df-4c64-46ce-93d5-5b9c170d6dad",
+    "paidAmount": 3961000
 }
 
 ### 주문 취소
-
-DELETE http://localhost:5555/orders/9bb7c8ff-815a-41bd-865e-814bbc05481b/cancel
-Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+DELETE http://localhost:5555/orders/34c9a9df-4c64-46ce-93d5-5b9c170d6dad/cancel
+Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 ### 상품 찜하기
-
 PUT http://localhost:5555/products/1/like
-Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 ### 상품 찜 해제하기
 DELETE http://localhost:5555/products/1/like
-Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
