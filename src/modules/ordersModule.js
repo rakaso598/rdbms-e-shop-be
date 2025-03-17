@@ -12,41 +12,43 @@ ordersRouter.post("/", async (req, res, next) => {
     const token = req.headers.authorization.split("Basic ")[1];
     const userId = token.slice(1, -1);
 
-    const order = await prisma.order.create({
-      data: {
-        userId,
-      },
-    });
-
-    let totalAmount = 0;
-    const promises = data.map(async ({ productId, quantity }) => {
-      const { price } = await prisma.product.findUnique({
-        where: { id: productId },
-        select: { price: true },
-      });
-      const amount = price * quantity;
-      totalAmount += amount;
-
-      await prisma.orderItem.create({
+    await prisma.$transaction(async (tx) => {
+      const order = await tx.order.create({
         data: {
-          orderId: order.id,
-          productId,
-          quantity,
-          amount,
+          userId,
         },
       });
+
+      let totalAmount = 0;
+      const promises = data.map(async ({ productId, quantity }) => {
+        const { price } = await tx.product.findUnique({
+          where: { id: productId },
+          select: { price: true },
+        });
+        const amount = price * quantity;
+        totalAmount += amount;
+
+        await tx.orderItem.create({
+          data: {
+            orderId: order.id,
+            productId,
+            quantity,
+            amount,
+          },
+        });
+      });
+
+      await Promise.all(promises);
+
+      console.log(totalAmount);
+
+      const updatedOrder = await tx.order.update({
+        where: { id: order.id },
+        data: { totalAmount },
+      });
+
+      res.json(updatedOrder);
     });
-
-    await Promise.all(promises);
-
-    console.log(totalAmount);
-
-    const updatedOrder = await prisma.order.update({
-      where: { id: order.id },
-      data: { totalAmount },
-    });
-
-    res.json(updatedOrder);
   } catch (e) {
     next(e);
   }
