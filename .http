@@ -43,3 +43,8 @@ Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
   "orderId": "07f15d89-d192-498c-ae49-fc5742ede28d",
   "paidAmount": 1203700
 }
+
+### 주문 취소
+
+DELETE http://localhost:5555/orders/11cef48b-263e-416a-82fc-230f1b31797d/cancel
+Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@

@@ -82,4 +82,15 @@ ordersRouter.post("/payment", async (req, res, next) => {
   }
 });
 
+/**
+ * 주문취소
+ */
+ordersRouter.delete("/:id/cancel", async (req, res, next) => {
+  try {
+    res.send("ok");
+  } catch (e) {
+    next(e);
+  }
+});
+
 export default ordersRouter;
