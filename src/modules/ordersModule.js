@@ -1,16 +1,16 @@
 import express from "express";
 import prisma from "../db/prisma/clientPrisma.js";
+import userOnly from "../middlewares/userOnlyMiddleware.js";
 
 const ordersRouter = express.Router();
 
 /**
  * 주문하기
  */
-ordersRouter.post("/", async (req, res, next) => {
+ordersRouter.post("/", userOnly, async (req, res, next) => {
   try {
     const data = req.body;
-    const token = req.headers.authorization.split("Basic ")[1];
-    const userId = token.slice(1, -1);
+    const userId = req.userId;
 
     await prisma.$transaction(async (tx) => {
       const order = await tx.order.create({
@@ -55,14 +55,15 @@ ordersRouter.post("/", async (req, res, next) => {
 /**
  * 결제하기
  */
-ordersRouter.post("/payment", async (req, res, next) => {
+ordersRouter.post("/payment", userOnly, async (req, res, next) => {
   try {
     const data = req.body;
+    const userId = req.userId;
     const { orderId, paidAmount } = data;
 
     await prisma.$transaction(async (tx) => {
       let updatedOrder = await tx.order.update({
-        where: { id: orderId },
+        where: { id: orderId, userId },
         data: {
           paidAmount: { increment: paidAmount },
           balanceAmount: { increment: paidAmount },
@@ -83,10 +84,9 @@ ordersRouter.post("/payment", async (req, res, next) => {
   }
 });
 
-ordersRouter.delete("/:orderId/cancel", async (req, res, next) => {
+ordersRouter.delete("/:orderId/cancel", userOnly, async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split("Basic ")[1];
-    const userId = token.slice(1, -1);
+    const userId = req.userId;
     const orderId = req.params.orderId;
 
     await prisma.$transaction(async (tx) => {
