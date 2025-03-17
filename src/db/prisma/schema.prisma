@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// 프리즈마는 기본적으로 not null , 허용시 type"?"
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +10,11 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int    @id @default(autoincrement())
+  email             String @unique
+  name              String
+  encryptedPassword String
 }
