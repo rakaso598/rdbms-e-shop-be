@@ -39,7 +39,7 @@ enum ProductCategory {
 model Order {
   id             String      @id @default(uuid())
   status         OrderStatus @default(pending)
-  user           User        @relation(fields: [userId], references: [id])
+  user           User        @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId         String
   orderItems     OrderItem[]
   totalAmount    Int? // 총 판매 금액
@@ -51,9 +51,9 @@ model Order {
 
 model OrderItem {
   id        String  @id @default(uuid())
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
   productId Int
   quantity  Int
   amount    Int
@@ -69,9 +69,9 @@ enum OrderStatus {
 
 model FavoriteProduct {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   createdAt DateTime @default(now())
 

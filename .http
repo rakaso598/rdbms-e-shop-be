@@ -46,7 +46,7 @@ DELETE http://localhost:5555/orders/34c9a9df-4c64-46ce-93d5-5b9c170d6dad/cancel
 Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 ### 상품 찜하기
-PUT http://localhost:5555/products/1/like
+PUT http://localhost:5555/products/5/like
 Authorization: Basic $b15487b7-be9c-4092-9f3a-2db30ff92c40@
 
 ### 상품 찜 해제하기
