@@ -31,3 +31,11 @@
 ### const prisma = new PrismaClient();
 
 ---
+
+ordersRouter.post("/", async (req, res, next) => {
+  try {
+    
+  } catch (e) {
+    next(e);
+  }
+});
