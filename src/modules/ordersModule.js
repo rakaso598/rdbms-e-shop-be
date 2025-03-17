@@ -54,11 +54,29 @@ ordersRouter.post("/", async (req, res, next) => {
   }
 });
 
+/**
+ * 결제하기
+ */
 ordersRouter.post("/payment", async (req, res, next) => {
   try {
     const data = req.body;
-    console.log(data);
-    res.send("OK");
+    const { orderId, paidAmount } = data;
+
+    prisma.$transaction(async (tx) => {
+      let updatedOrder = await tx.order.update({
+        where: { id: orderId },
+        data: { paidAmount: { increament: paidAmount } },
+      });
+
+      if (updatedOrder.totalAmount === updatedOrder.paidAmount) {
+        updatedOrder = await tx.order.update({
+          where: { id: updatedOrder.id },
+          data: { status: "paid" },
+        });
+      }
+
+      res.json(updatedOrder);
+    });
   } catch (e) {
     next(e);
   }
