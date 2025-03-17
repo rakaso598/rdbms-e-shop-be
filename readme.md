@@ -26,6 +26,8 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 
 ### `npx prisma studio`
 
+### npm install cors : cors 해결하는 미들웨어 설치
+
 ---
 
 ### import { PrismaClient } from "@prisma/client";

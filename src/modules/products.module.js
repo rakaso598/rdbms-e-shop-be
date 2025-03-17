@@ -5,6 +5,19 @@ const prisma = require("../db/prisma/client.prisma");
 const productsRouter = express.Router();
 
 /**
+ * 상품 목록 읽기
+ */
+productsRouter.get("/", async (req, res, next) => {
+  try {
+    const products = await prisma.product.findMany();
+
+    res.json(products);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
  * 찜 하기
  */
 productsRouter.put("/:productId/like", userOnly, async (req, res, next) => {
