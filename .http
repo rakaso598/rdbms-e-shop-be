@@ -12,3 +12,11 @@ Content-Type: application/json
 }
 
 ### 기본적으로는 express가 json을 파싱하지 않음
+
+POST http://localhost:5555/users/log-in
+Content-Type: application/json
+
+{
+  "email": "test2@test.com",
+  "password": "1234"
+}
