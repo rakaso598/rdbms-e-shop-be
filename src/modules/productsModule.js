@@ -36,16 +36,23 @@ productRouter.delete("/:productId/like", userOnly, async (req, res, next) => {
     const userId = req.userId;
     const productId = Number(req.params.productId);
 
-    await prisma.favoriteProduct.delete({
-      where: {
-        userId_productId: {
-          userId,
-          productId,
-        },
-      },
-    });
+    await prisma.$transaction(async (tx) => {
+      const existingFavoriteProduct = await tx.favoriteProduct.findUnique({
+        where: { userId_productId: { userId, productId } },
+      });
+      if (!existingFavoriteProduct) return res.status(204).send();
 
-    res.status(204);
+      await tx.favoriteProduct.delete({
+        where: {
+          userId_productId: {
+            userId,
+            productId,
+          },
+        },
+      });
+
+      res.status(204);
+    });
   } catch (e) {
     next();
   }
