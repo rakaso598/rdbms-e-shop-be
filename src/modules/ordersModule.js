@@ -40,8 +40,6 @@ ordersRouter.post("/", async (req, res, next) => {
 
       await Promise.all(promises);
 
-      console.log(totalAmount);
-
       const updatedOrder = await tx.order.update({
         where: { id: order.id },
         data: { totalAmount },
@@ -62,10 +60,13 @@ ordersRouter.post("/payment", async (req, res, next) => {
     const data = req.body;
     const { orderId, paidAmount } = data;
 
-    prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       let updatedOrder = await tx.order.update({
         where: { id: orderId },
-        data: { paidAmount: { increment: paidAmount } },
+        data: {
+          paidAmount: { increment: paidAmount },
+          balanceAmount: { increment: paidAmount },
+        },
       });
 
       if (updatedOrder.totalAmount === updatedOrder.paidAmount) {
@@ -82,12 +83,28 @@ ordersRouter.post("/payment", async (req, res, next) => {
   }
 });
 
-/**
- * 주문취소
- */
-ordersRouter.delete("/:id/cancel", async (req, res, next) => {
+ordersRouter.delete("/:orderId/cancel", async (req, res, next) => {
   try {
-    res.send("ok");
+    const token = req.headers.authorization.split("Basic ")[1];
+    const userId = token.slice(1, -1);
+    const orderId = req.params.orderId;
+
+    await prisma.$transaction(async (tx) => {
+      const order = await tx.order.findUnique({ where: { id: orderId } });
+      if (order.userId !== userId)
+        throw new Error("다른 사람의 주문을 취소 시도하고 있습니다...");
+
+      const updatedOrder = await tx.order.update({
+        where: { id: orderId },
+        data: {
+          status: "refunded",
+          refundedAmount: order.totalAmount,
+          balanceAmount: 0,
+        },
+      });
+
+      res.json(updatedOrder);
+    });
   } catch (e) {
     next(e);
   }
