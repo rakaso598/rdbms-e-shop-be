@@ -1,1 +1,14 @@
 GET http://localhost:5555/health-check
+
+### POST 회원가입
+
+POST http://localhost:5555/users/sign-up
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "name": "test",
+  "password": "1234"
+}
+
+###

@@ -1,4 +1,5 @@
 import express from "express";
+import router from "./modules/indexModule";
 
 const app = express();
 const PORT = 5555;
