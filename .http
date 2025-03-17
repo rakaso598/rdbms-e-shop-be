@@ -25,6 +25,7 @@ Content-Type: application/json
 
 POST http://localhost:5555/orders
 Content-Type: application/json
+Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
 
 [
   {"productId": 1, "quantity": 2},

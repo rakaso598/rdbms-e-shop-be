@@ -8,8 +8,9 @@ const ordersRouter = express.Router();
 ordersRouter.post("/", async (req, res, next) => {
   try {
     const data = req.body;
-    console.log(data);
-    
+    // 토큰 추출
+    const token = req.headers.authorization.split("Basic ")[1];
+    console.log(token);
 
     res.send("OK");
   } catch (e) {

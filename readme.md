@@ -32,6 +32,8 @@
 
 ---
 
+### 라우터 기본형 (비동기)
+
 router.post("/", async (req, res, next) => {
 try {
 
@@ -39,3 +41,5 @@ try {
 next(e);
 }
 });
+
+---
