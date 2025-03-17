@@ -2,7 +2,7 @@
 
 ### Prisma + SQLite + PostgreSQL
 
-![image](https://github.com/user-attachments/assets/d6cbdebb-c714-49f9-8c80-477ccdd59919)
+![image](https://github.com/user-attachments/assets/7ec3e65b-a6b8-44f2-9ebc-6e17ab539b62)
 
 ### VScode 확장 Rest Client 사용
 
