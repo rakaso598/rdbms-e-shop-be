@@ -1,6 +1,8 @@
-## RDBMS + 비즈니스 쇼핑몰(amazon) 연습 basic
+### RDBMS + 비즈니스 쇼핑몰 e-shop 연습 basic
 
 ### Prisma + SQLite + PostgreSQL
+
+![image](https://github.com/user-attachments/assets/d6cbdebb-c714-49f9-8c80-477ccdd59919)
 
 ### VScode 확장 Rest Client 사용
 
