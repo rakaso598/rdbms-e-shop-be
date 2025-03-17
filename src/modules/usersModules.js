@@ -16,6 +16,9 @@ usersRouter.post("/sign-up", async (req, res, next) => {
         name: data.name,
         encryptedPassword: "$" + data.password + "@",
       },
+      omit: {
+        encryptedPassword: true,
+      },
     });
     const json = JSON.stringify(user);
 
