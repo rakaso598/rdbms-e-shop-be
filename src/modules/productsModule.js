@@ -12,9 +12,17 @@ productRouter.put("/:productId/like", userOnly, async (req, res, next) => {
     const userId = req.userId;
     const productId = Number(req.params.productId);
 
-    await prisma.favoriteProduct.create({ data: { userId, productId } });
+    await prisma.$transaction(async () => {
+      const existingFavoriteProduct = tx.favoriteProduct.findUnique({
+        where: { userId_productId },
+      });
+      // 만약에
+      if (existingFavoriteProduct) return res.status(201).send("Created");
 
-    res.status(201).send("Created");
+      await tx.favoriteProduct.create({ data: { userId, productId } });
+
+      res.status(201).send("Created");
+    });
   } catch (e) {
     next();
   }
@@ -30,8 +38,10 @@ productRouter.delete("/:productId/like", userOnly, async (req, res, next) => {
 
     await prisma.favoriteProduct.delete({
       where: {
-        userId,
-        productId,
+        userId_productId: {
+          userId,
+          productId,
+        },
       },
     });
 
