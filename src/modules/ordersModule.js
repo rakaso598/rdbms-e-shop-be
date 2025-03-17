@@ -65,7 +65,7 @@ ordersRouter.post("/payment", async (req, res, next) => {
     prisma.$transaction(async (tx) => {
       let updatedOrder = await tx.order.update({
         where: { id: orderId },
-        data: { paidAmount: { increament: paidAmount } },
+        data: { paidAmount: { increment: paidAmount } },
       });
 
       if (updatedOrder.totalAmount === updatedOrder.paidAmount) {
