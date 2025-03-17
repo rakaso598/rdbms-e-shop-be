@@ -1,5 +1,5 @@
 function authentication(req, res, next) {
-  const token = req.headers.authentication.split("Basic ")[1];
+  const token = req.headers.authorization.split("Basic ")[1];
 
   if (!token) return next();
 
