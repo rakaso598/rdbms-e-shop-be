@@ -6,8 +6,8 @@ POST http://localhost:5555/users/sign-up
 Content-Type: application/json
 
 {
-    "email": "test4@test.com",
-    "name": "tester",
+    "email": "test@test.com",
+    "name": "test",
     "password": "qwer1234"
 }
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
     "email": "test@test.com",
-    "password": "qwer1234"
+    "password": "1234"
 }
 
 ### 주문하기
