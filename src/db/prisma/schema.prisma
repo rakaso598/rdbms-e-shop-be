@@ -32,10 +32,10 @@ model Product {
 
 model Order {
   id          String      @id @default(uuid())
-  status      OrderStatus
+  status      OrderStatus @default(pending)
   user        User        @relation(fields: [userId], references: [id])
   userId      String // 외래키 foreignKey
-  totalAmount Int
+  totalAmount Int?
   orderedAt   DateTime    @default(now())
   orderItems  OrderItem[]
 }

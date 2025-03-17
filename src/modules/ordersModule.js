@@ -13,6 +13,13 @@ ordersRouter.post("/", async (req, res, next) => {
     const userId = req.headers.authorization.split("Basic ")[1].slice(1, -1);
     console.log(token);
 
+    const order = await prisma.order.create({
+      data: {
+        status: "pending",
+        userId,
+      },
+    });
+
     res.send("OK");
   } catch (e) {
     next(e);
