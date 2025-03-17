@@ -84,6 +84,9 @@ ordersRouter.post("/payment", userOnly, async (req, res, next) => {
   }
 });
 
+/**
+ * 환불하기
+ */
 ordersRouter.delete("/:orderId/cancel", userOnly, async (req, res, next) => {
   try {
     const userId = req.userId;

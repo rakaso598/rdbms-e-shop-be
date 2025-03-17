@@ -2,21 +2,20 @@ import express from "express";
 import userOnly from "../middlewares/userOnlyMiddleware.js";
 import prisma from "../db/prisma/clientPrisma.js";
 
-const productRouter = express.Router();
+const productsRouter = express.Router();
 
 /**
- * 찜하기
+ * 찜 하기
  */
-productRouter.put("/:productId/like", userOnly, async (req, res, next) => {
+productsRouter.put("/:productId/like", userOnly, async (req, res, next) => {
   try {
     const userId = req.userId;
     const productId = Number(req.params.productId);
 
-    await prisma.$transaction(async () => {
-      const existingFavoriteProduct = tx.favoriteProduct.findUnique({
-        where: { userId_productId },
+    await prisma.$transaction(async (tx) => {
+      const existingFavoriteProduct = await tx.favoriteProduct.findUnique({
+        where: { userId_productId: { userId, productId } },
       });
-      // 만약에
       if (existingFavoriteProduct) return res.status(201).send("Created");
 
       await tx.favoriteProduct.create({ data: { userId, productId } });
@@ -24,14 +23,14 @@ productRouter.put("/:productId/like", userOnly, async (req, res, next) => {
       res.status(201).send("Created");
     });
   } catch (e) {
-    next();
+    next(e);
   }
 });
 
 /**
- * 찜해제하기
+ * 찜 해제하기
  */
-productRouter.delete("/:productId/like", userOnly, async (req, res, next) => {
+productsRouter.delete("/:productId/like", userOnly, async (req, res, next) => {
   try {
     const userId = req.userId;
     const productId = Number(req.params.productId);
@@ -43,19 +42,14 @@ productRouter.delete("/:productId/like", userOnly, async (req, res, next) => {
       if (!existingFavoriteProduct) return res.status(204).send();
 
       await tx.favoriteProduct.delete({
-        where: {
-          userId_productId: {
-            userId,
-            productId,
-          },
-        },
+        where: { userId_productId: { userId, productId } },
       });
 
-      res.status(204);
+      res.status(204).send();
     });
   } catch (e) {
-    next();
+    next(e);
   }
 });
 
-export default productRouter;
+export default productsRouter;
