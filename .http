@@ -20,3 +20,16 @@ Content-Type: application/json
   "email": "test@test.com",
   "password": "1234"
 }
+
+### 주문하기
+
+POST http://localhost:5555/orders
+Content-Type: application/json
+
+[
+  {"productId": 1, "quantity": 2},
+  {"productId": 2, "quantity": 1},
+  {"productId": 5, "quantity": 3}
+]
+
+###
