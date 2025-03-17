@@ -10,6 +10,12 @@
 
 ---
 
+### 로그인에 성공하면, "토큰"을 받음.
+
+### 토큰을 항상 소지해야 함. 위조를 검사
+
+---
+
 ### A better git log : git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 ---

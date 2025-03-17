@@ -41,8 +41,13 @@ usersRouter.post("/log-in", async (req, res, next) => {
     // 전달 받은 이메일로 가입된 내역이 있는지 확인
     const user = await prisma.user.findUnique({ where: { email: data.email } });
     if (!user) throw new Error("가입되지 않은 이메일입니다...");
+    // 가입된 이메일이 있음이 보장된 상태
+    if ("$" + data.password + "@" !== user.encryptedPassword)
+      throw new Error("비밀번호가 일치하지 않습니다...");
+    // 아래로 이메일 존재, 비밀번호 일치하는 게 보장된 상태
+    const token = "$" + user.id + "@"; // 토큰이라고 가정
 
-    res.send("OK");
+    res.send(token);
   } catch (e) {
     next(e);
   }
