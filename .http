@@ -6,7 +6,7 @@ POST http://localhost:5555/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "test2@test.com",
+  "email": "test3@test.com",
   "name": "test",
   "password": "1234"
 }

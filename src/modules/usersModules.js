@@ -20,9 +20,8 @@ usersRouter.post("/sign-up", async (req, res, next) => {
         encryptedPassword: true,
       },
     });
-    const json = JSON.stringify(user);
 
-    res.send(json);
+    res.json(user); // res.json 은 전송 전 미리 json화
   } catch (e) {
     next(e);
   }
