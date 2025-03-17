@@ -48,3 +48,12 @@ Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
 
 DELETE http://localhost:5555/orders/9bb7c8ff-815a-41bd-865e-814bbc05481b/cancel
 Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+
+### 상품 찜하기
+
+PUT http://localhost:5555/products/1/like
+Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
+
+### 상품 찜 해제하기
+DELETE http://localhost:5555/products/1/like
+Authorization: Basic $567322a4-4990-466b-b6cc-b0599b8c4eb4@
