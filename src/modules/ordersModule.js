@@ -1,4 +1,5 @@
 import express from "express";
+import prisma from "../db/prisma/clientPrisma.js";
 
 const ordersRouter = express.Router();
 
@@ -8,10 +9,8 @@ const ordersRouter = express.Router();
 ordersRouter.post("/", async (req, res, next) => {
   try {
     const data = req.body;
-    // 토큰 추출 , Basic 제거 , 앞 한개 뒤 한개씩 제거
     const token = req.headers.authorization.split("Basic ")[1];
-    const userId = req.headers.authorization.split("Basic ")[1].slice(1, -1);
-    console.log(token);
+    const userId = token.slice(1, -1);
 
     const order = await prisma.order.create({
       data: {
@@ -19,10 +18,16 @@ ordersRouter.post("/", async (req, res, next) => {
       },
     });
 
-    data.forEach((orderItem) => {
-      const { productId, quantity } = orderItem;
-      prisma.product.findUnique({ where: { id: productId } });
-      const amount = prisma.orderItem.create({
+    let totalAmount = 0;
+    const promises = data.map(async ({ productId, quantity }) => {
+      const { price } = await prisma.product.findUnique({
+        where: { id: productId },
+        select: { price: true },
+      });
+      const amount = price * quantity;
+      totalAmount += amount;
+
+      await prisma.orderItem.create({
         data: {
           orderId: order.id,
           productId,
@@ -31,7 +36,17 @@ ordersRouter.post("/", async (req, res, next) => {
         },
       });
     });
-    res.send("OK");
+
+    await Promise.all(promises);
+
+    console.log(totalAmount);
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: order.id },
+      data: { totalAmount },
+    });
+
+    res.json(updatedOrder);
   } catch (e) {
     next(e);
   }
